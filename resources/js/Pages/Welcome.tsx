@@ -44,7 +44,6 @@ export default function Welcome({
 
     return (
         <Guest>
-
             <div>
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
