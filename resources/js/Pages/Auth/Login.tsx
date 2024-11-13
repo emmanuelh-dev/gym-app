@@ -7,7 +7,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function Login({
+export default function Component({
     status,
     canResetPassword,
 }: {
@@ -102,6 +102,18 @@ export default function Login({
                     </PrimaryButton>
                 </div>
             </form>
+
+            <div className="mt-6 text-center">
+                <p className="text-sm text-gray-600">
+                    Don't have an account?{' '}
+                    <Link
+                        href={route('register')}
+                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                        Sign up
+                    </Link>
+                </p>
+            </div>
         </GuestLayout>
     );
 }

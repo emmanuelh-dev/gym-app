@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'es_admin',
     ];
 
     /**
@@ -45,4 +46,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function isAdmin()
+    {
+        return $this->es_admin;
+    }
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class);
+    }
 }
+
