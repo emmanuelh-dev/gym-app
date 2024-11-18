@@ -11,14 +11,19 @@ class Welcome extends Controller
 {
     public function index()
     {
+        $reservations = Reservation::orderBy('date')
+            ->where('date', '>=', now()->format('Y-m-d'))
+            ->orderBy('time')
+            ->get();
+        $summedReservations = $reservations->groupBy('date')->map(function ($reservationsByDate) {
+            return $reservationsByDate->groupBy('time')->map(function ($reservationsByTime) {
+                return $reservationsByTime->sum('guests');
+            });
+        });
+
         return Inertia::render('Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-            'reservations' => Reservation::orderBy('date')
-                                         ->orderBy('time')
-                                         ->get()
+            'reservations' => $reservations,
+            'summedReservations' => $summedReservations,
         ]);
     }
 }

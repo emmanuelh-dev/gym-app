@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('date');
             $table->time('time');
             $table->integer('guests');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
 

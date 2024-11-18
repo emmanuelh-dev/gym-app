@@ -12,8 +12,9 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::orderBy('date')
-                                   ->orderBy('time')
-                                   ->get();
+            ->orderBy('time')
+            ->where('user_id', auth()->user()->id)
+            ->get();
 
         return Inertia::render('Reservations', [
             'reservations' => $reservations
@@ -22,11 +23,15 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+
         $validated = $request->validate([
             'date' => 'required|date',
             'time' => 'required',
-            'guests' => 'required|integer|min:1|max:5',
+            'guests' => 'required|integer|min:1',
         ]);
+        $form = [...$validated, 'user_id' => $user->id];
+        $validated['user_id'] = $user->id;
 
         $occupancy = Reservation::where('date', $validated['date'])
             ->where('time', $validated['time'])
@@ -39,7 +44,7 @@ class ReservationController extends Controller
             return back()->withErrors(['error' => 'La capacidad máxima ha sido excedida para este horario.']);
         }
 
-        Reservation::create($validated);
+        Reservation::create($form);
 
         return back()->with('success', 'Reserva creada exitosamente.');
     }

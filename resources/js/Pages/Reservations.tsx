@@ -133,13 +133,17 @@ export default function Reservations({ auth, reservations }: { auth: any, reserv
                                                     onChange={(e) => setData('guests', e.target.value)}
                                                     required
                                                 >
-                                                    {[1, 2, 3, 4, 5].map((num) => (
+                                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((num) => (
                                                         <option key={num} value={num.toString()}>{num}</option>
                                                     ))}
                                                 </select>
                                                 <InputError message={errors.guests} className="mt-2" />
                                             </div>
-
+                                            {errors.error && (
+                                                <div className="text-red-500 text-sm">
+                                                    {errors.error}
+                                                </div>
+                                            )}
                                             <PrimaryButton className="w-full" disabled={processing}>
                                                 Crear Reserva
                                             </PrimaryButton>
@@ -150,14 +154,12 @@ export default function Reservations({ auth, reservations }: { auth: any, reserv
 
                             <ScrollArea className="h-[400px]">
                                 {reservations.length === 0 ? (
-                                    <p className="text-center text-gray-500">No hay reservas.</p>
+                                    <p className="text-center text-gray-500">No tienes reservas. Comienza a reservar ahora!</p>
                                 ) : (
                                     <ul className="space-y-4">
                                         {reservations.map((reservation) => {
-                                            const occupancy = getOccupancy(reservation.date, reservation.time);
-                                            const cardColor = getCardColor(occupancy);
                                             return (
-                                                <li key={reservation.id} className={`flex items-center justify-between p-4 border rounded-lg ${cardColor}`}>
+                                                <li key={reservation.id} className={`flex items-center justify-between p-4 border rounded-lg`}>
                                                     <div>
                                                         <div className="flex items-center text-sm">
                                                             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -171,7 +173,7 @@ export default function Reservations({ auth, reservations }: { auth: any, reserv
                                                     <div className="flex items-center">
                                                         <div className="flex items-center text-sm mr-4">
                                                             <UserIcon className="mr-2 h-4 w-4" />
-                                                            <span>{occupancy} / {MAX_CAPACITY}</span>
+                                                            <span>{reservation.guests}</span>
                                                         </div>
                                                         <PrimaryButton
                                                             onClick={() => deleteReservation(reservation.id)}
