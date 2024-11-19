@@ -11,9 +11,12 @@ class ReservationController extends Controller
 {
     public function index()
     {
+        // Get reservations for the current day and next
+        $today = now()->format('Y-m-d');
         $reservations = Reservation::orderBy('date')
             ->orderBy('time')
             ->where('user_id', auth()->user()->id)
+            ->where('date', '>=', $today)
             ->get();
 
         return Inertia::render('Reservations', [
